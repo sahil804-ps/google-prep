@@ -29,6 +29,16 @@ test('Monday of week 1: new topic, problems, test-design lesson, grammar lesson'
   assert.ok(d.english.speaking);
 });
 
+test('foundation lessons run Monday to Friday of week 1 only', () => {
+  const basics = [{ id: 'b1' }, { id: 'b2' }, { id: 'b3' }, { id: 'b4' }, { id: 'b5' }];
+  const data = Object.assign({}, DATA, { basics });
+  const ids = [0, 1, 2, 3, 4, 5, 7].map((i) => {
+    const d = Day.build(Plan.addDays(Plan.START, i), data);
+    return d.learn && d.learn.basic ? d.learn.basic.id : null;
+  });
+  assert.deepEqual(ids, ['b1', 'b2', 'b3', 'b4', 'b5', null, null]);
+});
+
 test('weekday rotation of design work', () => {
   const types = [0, 1, 2, 3, 4, 5].map((i) => Day.build(Plan.addDays('2026-10-12', i), DATA).design.type);
   assert.deepEqual(types, ['td-lesson', 'sd-lesson', 'td-prompt', 'sd-prompt', 'td-prompt', 'behavioral']);

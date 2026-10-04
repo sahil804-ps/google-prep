@@ -34,7 +34,7 @@
     Plan.problemsForWeek(week, data.problems).forEach(function (p) { topics[p.topic] = true; });
     Object.keys(topics).forEach(function (t) {
       data.topics[t].quiz.forEach(function (q, i) {
-        quiz.push({ id: 'topic:' + t + ':' + i, source: t, q: q.q, options: q.options, answer: q.answer });
+        quiz.push({ id: 'topic:' + t + ':' + i, source: t, q: q.q, options: q.options, answer: q.answer, why: q.why });
       });
     });
     [data.english.grammar[(week - 1) * 2], data.english.grammar[(week - 1) * 2 + 1]].forEach(function (g) {
@@ -65,7 +65,9 @@
 
     if (info.kind === 'study') {
       var newTopics = Plan.newTopicsForDay(iso, data.problems);
-      day.learn = { newTopics: newTopics, topic: Plan.currentTopic(iso, data.problems) };
+      var basics = data.basics || [];
+      var basic = info.week === 1 && info.dow < basics.length ? basics[info.dow] : null;
+      day.learn = { newTopics: newTopics, topic: Plan.currentTopic(iso, data.problems), basic: basic };
       day.practice = Plan.problemsForDay(iso, data.problems);
       day.design = designFor(info, data.design);
       return day;

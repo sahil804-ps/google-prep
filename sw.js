@@ -1,11 +1,18 @@
-var CACHE = 'gprep-v1';
+var CACHE = 'gprep-v2';
 var SHELL = [
   './',
   'index.html',
   'css/style.css',
   'js/data/problems.js',
+  'js/data/bonus.js',
   'js/data/topics.js',
+  'js/data/topics-deep-1.js',
+  'js/data/topics-deep-2.js',
+  'js/data/basics.js',
+  'js/data/videos.js',
   'js/data/design.js',
+  'js/data/td-answers.js',
+  'js/data/sd-answers.js',
   'js/data/english.js',
   'js/plan.js',
   'js/day.js',

@@ -1,14 +1,31 @@
 (function () {
   'use strict';
 
-  var DATA = { problems: PROBLEMS, topics: TOPICS, design: DESIGN, english: ENGLISH };
+  var TOPIC_DATA = {};
+  Object.keys(TOPICS).forEach(function (t) {
+    TOPIC_DATA[t] = Object.assign({}, TOPICS[t], (window.TOPICS_DEEP || {})[t] || {});
+  });
+  var BASICS_LIST = window.BASICS || [];
+  var VIDEO_MAP = window.VIDEOS || {};
+  var BONUS_LIST = window.BONUS || [];
+  var TD_MODELS = window.TD_ANSWERS || {};
+  var SD_MORE = window.SD_EXTRA || { lessons: {}, answers: {} };
+  DESIGN.tdPrompts.forEach(function (it) { it.model = TD_MODELS[it.id]; });
+  DESIGN.sdPrompts.forEach(function (it) { it.model = SD_MORE.answers[it.id]; });
+  DESIGN.sdLessons.forEach(function (it) { if (SD_MORE.lessons[it.id]) it.notes = SD_MORE.lessons[it.id]; });
+
+  var DATA = { problems: PROBLEMS, topics: TOPIC_DATA, design: DESIGN, english: ENGLISH, basics: BASICS_LIST };
   var app = document.getElementById('app');
   var S = Store.load();
-  var ui = { open: {}, reveal: {}, dsaFilter: 'all', prompts: {}, pendingUrl: null, freePrompt: 0 };
+  var ui = { open: {}, reveal: {}, vid: {}, model: {}, dsaFilter: 'all', prompts: {}, pendingUrl: null, freePrompt: 0 };
   var timer = { running: false, startedAt: 0, acc: 0, label: 'Focus timer' };
 
   var PROBLEM_BY_ID = {};
-  PROBLEMS.forEach(function (p) { PROBLEM_BY_ID[p.id] = p; });
+  PROBLEMS.concat(BONUS_LIST).forEach(function (p) { PROBLEM_BY_ID[p.id] = p; });
+  var BONUS_IDS = {};
+  BONUS_LIST.forEach(function (p) { BONUS_IDS[p.id] = true; });
+  var BASIC_BY_ID = {};
+  BASICS_LIST.forEach(function (b) { BASIC_BY_ID[b.id] = b; });
   var DESIGN_BY_ID = {};
   var DESIGN_TYPE = { tdLessons: 'td-lesson', tdPrompts: 'td-prompt', sdLessons: 'sd-lesson', sdPrompts: 'sd-prompt', behavioral: 'behavioral' };
   Object.keys(DESIGN_TYPE).forEach(function (k) {
@@ -144,7 +161,8 @@
     if (ds && ds.steps && ds.steps[step]) return true;
     switch (step) {
       case 'learn':
-        return learnTopics(day).every(function (t) { return quizComplete('topic:' + t, TOPICS[t].quiz); });
+        if (day.learn.basic && !quizComplete('basic:' + day.learn.basic.id, day.learn.basic.quiz)) return false;
+        return learnTopics(day).every(function (t) { return quizComplete('topic:' + t, TOPIC_DATA[t].quiz); });
       case 'practice':
         return day.practice.every(function (p) { return solved(p.id); });
       case 'design':
@@ -251,14 +269,47 @@
     return '<div class="problem' + (isSolved ? ' solved' : '') + '">' + head + actions + videoBlock(p) + solvedRow + notes + '</div>';
   }
 
+  function renderVideos(key, moreUrl) {
+    var list = VIDEO_MAP[key] || [];
+    var players = list.filter(function (v) { return ui.vid[key + ':' + v.id]; }).map(function (v) {
+      return '<div class="video"><iframe src="https://www.youtube-nocookie.com/embed/' + esc(v.id) + '" title="' + esc(v.title) + '" allow="encrypted-media; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>' +
+        '<p class="small muted">' + esc(v.title) + ' - ' + esc(v.channel) + ' (' + esc(v.lang) + ')</p>';
+    }).join('');
+    var buttons = list.filter(function (v) { return !ui.vid[key + ':' + v.id]; }).map(function (v) {
+      return '<button class="btn small" data-act="play" data-k="' + esc(key + ':' + v.id) + '">Watch: ' + esc(v.title) + ' - ' + esc(v.channel) + ' (' + esc(v.lang) + ')</button>';
+    }).join('');
+    var more = moreUrl ? ext(moreUrl, list.length ? 'More videos on YouTube' : 'Find a video on YouTube') : '';
+    return players + '<div class="row videos">' + buttons + more + '</div>';
+  }
+
   function topicLinks(t) {
-    var tp = TOPICS[t];
-    return '<div class="row">' +
+    var tp = TOPIC_DATA[t];
+    return renderVideos(t, yt('NeetCode ' + t + ' explained')) + '<div class="row" style="margin-top:6px">' +
       ext(tp.visual, 'Animation (VisuAlgo)') +
-      ext(yt('NeetCode ' + t + ' explained'), 'Concept video (YouTube)') +
-      ext(yt('take U forward ' + t), 'Striver video (Hindi/English)') +
+      ext(yt('take U forward ' + t), 'Striver videos (Hindi/English)') +
       ext('https://pythontutor.com/visualize.html', 'Run code step by step') +
       '</div>';
+  }
+
+  function renderBasic(b) {
+    return '<span class="badge Medium">Foundation lesson</span><h3><a href="#/basics/' + b.id + '">' + esc(b.title) + '</a></h3>' +
+      '<p class="muted small">Basics first: they make every NeetCode topic easier.</p>' +
+      renderVideos(b.id, yt(b.title + ' explained')) + md(b.notes) + renderQuiz('basic:' + b.id, b.quiz);
+  }
+
+  function renderModel(item, storeKey) {
+    if (!item.model) return '';
+    var state = ui.model[storeKey];
+    if (state === 'show') {
+      return '<div class="card model"><div class="row spread"><b>Model answer</b><button class="btn small ghost" data-act="model-hide" data-id="' + esc(storeKey) + '">Hide</button></div>' +
+        '<p class="small muted">Compare with yours: what did you miss? Add it to your notes, then say the full answer out loud once.</p>' + md(item.model) + '</div>';
+    }
+    if (state === 'ask') {
+      return '<div class="tip">Write your own answer first - in the interview nobody will show you one. Even 5 bullet points is enough.' +
+        '<div class="row" style="margin-top:8px"><button class="btn small" data-act="model-show" data-id="' + esc(storeKey) + '">Show it anyway</button>' +
+        '<button class="btn small ghost" data-act="model-hide" data-id="' + esc(storeKey) + '">I will write first</button></div></div>';
+    }
+    return '<button class="btn small ghost" data-act="model" data-id="' + esc(storeKey) + '">Show model answer</button>';
   }
 
   function renderDesign(item, type, storeKey) {
@@ -268,7 +319,8 @@
     if (type === 'td-lesson' || type === 'sd-lesson') {
       return '<span class="badge info">' + (type === 'td-lesson' ? 'Test design lesson' : 'System design lesson') + '</span>' +
         '<h3>' + esc(item.title) + '</h3>' + md(item.notes) +
-        '<div class="row">' + item.read.map(function (r) { return ext(r.url, 'Read: ' + r.label); }).join('') + ext(item.video, 'Video (YouTube)') + '</div>' +
+        renderVideos(item.id, item.video) +
+        '<div class="row" style="margin-top:6px">' + item.read.map(function (r) { return ext(r.url, 'Read: ' + r.label); }).join('') + '</div>' +
         '<textarea style="margin-top:10px" placeholder="3 key points in my own words (in English)..." data-bind="design.' + storeKey + '.answer">' + esc(st.answer || '') + '</textarea>' +
         '<div class="row" style="margin-top:8px">' + doneBtn + '</div>';
     }
@@ -290,6 +342,7 @@
       '<p class="muted small">Speak out loud while you write, like in the interview. Then tick what you covered.</p>' +
       '<textarea style="min-height:160px" placeholder="Clarifying questions, then your answer..." data-bind="design.' + storeKey + '.answer">' + esc(st.answer || '') + '</textarea>' +
       '<h4>Self-check (' + n + ' / ' + item.checklist.length + ')</h4><div class="checklist">' + list + '</div>' +
+      '<div style="margin-top:8px">' + renderModel(item, storeKey) + '</div>' +
       '<div class="row" style="margin-top:8px">' + doneBtn + '</div>';
   }
 
@@ -351,8 +404,9 @@
   // ---------- step bodies ----------
   function learnBody(day) {
     var fresh = day.learn.newTopics.length > 0;
-    return learnTopics(day).map(function (t) {
-      var tp = TOPICS[t];
+    var basic = day.learn.basic ? renderBasic(day.learn.basic) + '<hr>' : '';
+    return basic + learnTopics(day).map(function (t) {
+      var tp = TOPIC_DATA[t];
       var notes = fresh ? md(tp.notes) : '<details><summary class="small">Show notes</summary>' + md(tp.notes) + '</details>';
       return '<div class="stack">' +
         (fresh ? '<span class="badge Medium">New topic</span>' : '<span class="badge info">5-minute revision</span>') +
@@ -363,9 +417,14 @@
   }
 
   function practiceBody(day) {
+    var extra = '';
+    if (day.practice.every(function (p) { return solved(p.id); })) {
+      var next = BONUS_LIST.filter(function (b) { return b.topic === day.learn.topic && !solved(b.id); })[0];
+      if (next) extra = '<h4>Done early? Bonus problem</h4>' + renderProblem(next);
+    }
     return '<div class="tip small"><b>Method:</b> think 15-20 min, write the approach as comments, code it, run tests. ' +
       'Stuck? Watch only the approach in the video, close it, re-code without looking. Then explain it out loud in English.</div>' +
-      '<div style="margin-top:10px">' + day.practice.map(function (p) { return renderProblem(p); }).join('') + '</div>';
+      '<div style="margin-top:10px">' + day.practice.map(function (p) { return renderProblem(p); }).join('') + extra + '</div>';
   }
 
   function revisitBody(day) {
@@ -489,16 +548,33 @@
       });
       if (!list.length) return '';
       var n = byTopic[t].filter(function (p) { return solved(p.id); }).length;
+      var bonus = BONUS_LIST.filter(function (p) { return p.topic === t; });
+      var bonusDone = bonus.filter(function (p) { return solved(p.id); }).length;
       return '<div class="card"><div class="row spread"><h3 style="margin:0"><a href="#/topic/' + encodeURIComponent(t) + '">' + esc(t) + '</a></h3><span class="muted small">' + n + ' / ' + byTopic[t].length + '</span></div>' +
-        '<div class="list">' + list.map(function (p) {
-          var r = S.problems[p.id] || {};
-          return '<a class="item" href="#/problem/' + p.id + '"><span class="row"><span class="dot' + (r.weak ? ' weak' : r.solvedAt ? ' on' : '') + '"></span>' + esc(p.title) + '</span>' +
-            '<span class="row small"><span class="muted">' + (SCHEDULED_ON[p.id] ? pretty(SCHEDULED_ON[p.id]) : '') + '</span><span class="badge ' + p.difficulty + '">' + p.difficulty + '</span></span></a>';
-        }).join('') + '</div></div>';
+        '<div class="list">' + list.map(problemItem).join('') + '</div>' +
+        (bonus.length ? '<details class="small" style="margin-top:6px"><summary>Bonus practice (' + bonusDone + ' / ' + bonus.length + ') - only after the main list</summary><div class="list">' + bonus.map(problemItem).join('') + '</div></details>' : '') +
+        '</div>';
     }).join('');
+    var basics = BASICS_LIST.length ? '<div class="card"><h3>Foundations (week 1)</h3><div class="list">' + BASICS_LIST.map(function (b) {
+      var sc = quizScore('basic:' + b.id, b.quiz);
+      return '<a class="item" href="#/basics/' + b.id + '"><span class="row"><span class="dot' + (sc.answered === sc.total ? ' on' : '') + '"></span>' + esc(b.title) + '</span><span class="muted small">' + (sc.answered ? sc.right + '/' + sc.total : '') + '</span></a>';
+    }).join('') + '</div></div>' : '';
     return '<div class="card"><h1>NeetCode 150</h1><div class="row spread"><span><b>' + done + '</b> / ' + total + ' solved - <b>' + weak + '</b> weak</span>' + ext('https://neetcode.io/roadmap', 'NeetCode roadmap') + '</div>' +
       '<div class="bar" style="margin-top:8px"><span style="width:' + Math.round((done / total) * 100) + '%"></span></div>' +
-      '<div class="row" style="margin-top:10px">' + filters + '</div></div>' + (sections || '<div class="card muted">Nothing here yet.</div>');
+      '<div class="row" style="margin-top:10px">' + filters + '</div></div>' + basics + (sections || '<div class="card muted">Nothing here yet.</div>');
+  }
+
+  function problemItem(p) {
+    var r = S.problems[p.id] || {};
+    var when = SCHEDULED_ON[p.id] ? pretty(SCHEDULED_ON[p.id]) : 'bonus';
+    return '<a class="item" href="#/problem/' + p.id + '"><span class="row"><span class="dot' + (r.weak ? ' weak' : r.solvedAt ? ' on' : '') + '"></span>' + esc(p.title) + '</span>' +
+      '<span class="row small"><span class="muted">' + when + '</span><span class="badge ' + p.difficulty + '">' + p.difficulty + '</span></span></a>';
+  }
+
+  function pageBasic(id) {
+    var b = BASIC_BY_ID[id];
+    if (!b) return '<div class="card">Lesson not found. <a href="#/dsa">Back</a></div>';
+    return '<div class="card"><a href="#/dsa" class="small">&larr; DSA</a>' + renderBasic(b) + '</div>';
   }
 
   function pageProblem(id) {
@@ -509,18 +585,20 @@
     var hist = (r.reviews || []).map(pretty).join(', ') || 'none yet';
     return '<div class="card"><a href="#/dsa" class="small">&larr; All problems</a><h1>' + esc(p.title) + '</h1>' + renderProblem(p) +
       '<div class="row small muted" style="margin-top:10px">' +
-      (SCHEDULED_ON[id] ? '<span>Planned for <a href="#/today/' + SCHEDULED_ON[id] + '">' + pretty(SCHEDULED_ON[id]) + '</a></span>' : '') +
+      (SCHEDULED_ON[id] ? '<span>Planned for <a href="#/today/' + SCHEDULED_ON[id] + '">' + pretty(SCHEDULED_ON[id]) + '</a></span>' : '<span>Bonus problem (extra practice)</span>') +
       '<span>Revisions: ' + hist + '</span></div>' +
       '<div class="row" style="margin-top:10px"><button class="btn small ' + (r.weak ? 'red' : 'ghost') + '" data-act="weak" data-id="' + id + '">' + (r.weak ? 'Marked weak (tap to clear)' : 'Mark as weak') + '</button>' +
       '<a class="btn small ghost" href="#/topic/' + encodeURIComponent(p.topic) + '">' + esc(p.topic) + ' notes</a></div></div>';
   }
 
   function pageTopic(t) {
-    var tp = TOPICS[t];
+    var tp = TOPIC_DATA[t];
     if (!tp) return '<div class="card">Topic not found.</div>';
     var list = PROBLEMS.filter(function (p) { return p.topic === t; });
+    var bonus = BONUS_LIST.filter(function (p) { return p.topic === t; });
     return '<div class="card"><a href="#/dsa" class="small">&larr; DSA</a><h1>' + esc(t) + '</h1>' + topicLinks(t) + md(tp.notes) + renderQuiz('topic:' + t, tp.quiz) + '</div>' +
-      '<div class="card"><h3>Problems</h3>' + list.map(function (p) { return renderProblem(p, { noNotes: true }); }).join('') + '</div>';
+      '<div class="card"><h3>Problems</h3>' + list.map(function (p) { return renderProblem(p, { noNotes: true }); }).join('') + '</div>' +
+      (bonus.length ? '<div class="card"><h3>Bonus practice</h3><p class="muted small">Extra problems from NeetCode\'s full list. Do these only after the main list, or on weekends.</p>' + bonus.map(function (p) { return renderProblem(p, { noNotes: true }); }).join('') + '</div>' : '');
   }
 
   function designList(title, items, type) {
@@ -648,6 +726,7 @@
       case 'dsa': html = pageDsa(); break;
       case 'problem': html = pageProblem(parts[1]); tab = 'dsa'; break;
       case 'topic': html = pageTopic(decodeURIComponent(parts.slice(1).join('/'))); tab = 'dsa'; break;
+      case 'basics': html = pageBasic(parts[1]); tab = 'dsa'; break;
       case 'design': html = pageDesign(parts[1]); break;
       case 'english': html = pageEnglish(parts[1], parts[2]); break;
       case 'progress': html = pageProgress(); break;
@@ -736,6 +815,13 @@
     reveal: function (el) { ui.reveal[el.dataset.id] = ui.reveal[el.dataset.id] ? null : (solved(el.dataset.id) ? 'show' : 'ask'); },
     'reveal-show': function (el) { ui.reveal[el.dataset.id] = 'show'; },
     'reveal-hide': function (el) { ui.reveal[el.dataset.id] = null; },
+    play: function (el) { ui.vid[el.dataset.k] = true; },
+    model: function (el) {
+      var st = S.design[el.dataset.id] || {};
+      ui.model[el.dataset.id] = (st.answer || '').trim().length >= 40 ? 'show' : 'ask';
+    },
+    'model-show': function (el) { ui.model[el.dataset.id] = 'show'; },
+    'model-hide': function (el) { ui.model[el.dataset.id] = null; },
     'design-done': function (el) {
       var st = S.design[el.dataset.id] || (S.design[el.dataset.id] = {});
       st.done = !st.done;
