@@ -851,8 +851,10 @@
       return false;
     },
     'timer-reset': function () {
+      var had = timerSeconds() > 0;
       timer = { running: false, startedAt: 0, acc: 0, label: 'Focus timer' };
       paintTimer();
+      toast(had ? 'Timer reset to 00:00' : 'Timer is already at 00:00 - press Start');
       return false;
     },
     'timer-for': function (el) {
