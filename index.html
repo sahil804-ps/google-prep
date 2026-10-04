@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Google Prep</title>
+  <meta name="description" content="Daily step-by-step prep for a Google SWE-Test / SDET interview: DSA, test design, system design and English.">
+  <meta name="theme-color" content="#1a73e8">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="sticky">
+  <header class="topbar">
+    <a class="brand" href="#/today">Google Prep</a>
+    <div class="timer" id="timer">
+      <span class="timer-label" id="timer-label">Focus timer</span>
+      <span class="timer-time" id="timer-time">00:00</span>
+      <button class="btn small" data-act="timer-toggle" id="timer-toggle">Start</button>
+      <button class="btn small ghost" data-act="timer-reset">Reset</button>
+    </div>
+    <span class="streak" id="streak" title="Days in a row with every step done"></span>
+  </header>
+
+  <nav class="tabs" id="tabs">
+    <a href="#/today" data-tab="today">Today</a>
+    <a href="#/dsa" data-tab="dsa">DSA</a>
+    <a href="#/design" data-tab="design">Design</a>
+    <a href="#/english" data-tab="english">English</a>
+    <a href="#/progress" data-tab="progress">Progress</a>
+    <a href="#/more" data-tab="more">More</a>
+  </nav>
+  </div>
+
+  <main id="app" class="container" tabindex="-1"></main>
+
+  <script src="js/data/problems.js"></script>
+  <script src="js/data/topics.js"></script>
+  <script src="js/data/design.js"></script>
+  <script src="js/data/english.js"></script>
+  <script src="js/plan.js"></script>
+  <script src="js/day.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/recorder.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
+      navigator.serviceWorker.register('sw.js');
+    }
+  </script>
+</body>
+</html>
