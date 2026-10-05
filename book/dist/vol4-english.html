@@ -1,0 +1,1269 @@
+<!doctype html><html><head><meta charset='utf-8'><title>Volume 4 - English for technical interviews</title><style>
+@page { size: A4; margin: 16mm 14mm; }
+body { font-family: 'Segoe UI', Arial, sans-serif; font-size: 11pt; line-height: 1.5; color: #1d1d1f; max-width: 820px; margin: auto; }
+h1 { color: #1a56db; border-bottom: 3px solid #1a56db; padding-bottom: 4px; page-break-before: always; }
+body > h1:first-of-type { page-break-before: avoid; font-size: 26pt; }
+h2 { color: #0b3d91; margin-top: 1.4em; border-bottom: 1px solid #dde3ee; }
+h3 { color: #333; }
+pre { background: #f6f8fa; border: 1px solid #e1e4e8; border-radius: 6px; padding: 10px; font-size: 9.5pt; white-space: pre-wrap; page-break-inside: avoid; }
+code { font-family: Consolas, 'Courier New', monospace; background: #f3f4f6; padding: 0 3px; border-radius: 3px; }
+pre code { background: none; padding: 0; }
+table { border-collapse: collapse; width: 100%; margin: 10px 0; font-size: 10pt; page-break-inside: auto; }
+th, td { border: 1px solid #d0d7de; padding: 5px 7px; text-align: left; vertical-align: top; }
+th { background: #eef2fb; }
+tr { page-break-inside: avoid; }
+blockquote { border-left: 4px solid #1a56db; background: #f4f7ff; margin: 10px 0; padding: 6px 12px; }
+hr { border: 0; }
+a { color: #1a56db; word-break: break-word; }
+pre { line-height: 125%; }
+td.linenos .normal { color: #666666; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: #666666; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+pre .hll { background-color: #ffffcc }
+pre { background: #f0f0f0; }
+pre .c { color: #60A0B0; font-style: italic } /* Comment */
+pre .err { border: 1px solid #F00 } /* Error */
+pre .k { color: #007020; font-weight: bold } /* Keyword */
+pre .o { color: #666 } /* Operator */
+pre .ch { color: #60A0B0; font-style: italic } /* Comment.Hashbang */
+pre .cm { color: #60A0B0; font-style: italic } /* Comment.Multiline */
+pre .cp { color: #007020 } /* Comment.Preproc */
+pre .cpf { color: #60A0B0; font-style: italic } /* Comment.PreprocFile */
+pre .c1 { color: #60A0B0; font-style: italic } /* Comment.Single */
+pre .cs { color: #60A0B0; background-color: #FFF0F0 } /* Comment.Special */
+pre .gd { color: #A00000 } /* Generic.Deleted */
+pre .ge { font-style: italic } /* Generic.Emph */
+pre .ges { font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+pre .gr { color: #F00 } /* Generic.Error */
+pre .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+pre .gi { color: #00A000 } /* Generic.Inserted */
+pre .go { color: #888 } /* Generic.Output */
+pre .gp { color: #C65D09; font-weight: bold } /* Generic.Prompt */
+pre .gs { font-weight: bold } /* Generic.Strong */
+pre .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+pre .gt { color: #04D } /* Generic.Traceback */
+pre .kc { color: #007020; font-weight: bold } /* Keyword.Constant */
+pre .kd { color: #007020; font-weight: bold } /* Keyword.Declaration */
+pre .kn { color: #007020; font-weight: bold } /* Keyword.Namespace */
+pre .kp { color: #007020 } /* Keyword.Pseudo */
+pre .kr { color: #007020; font-weight: bold } /* Keyword.Reserved */
+pre .kt { color: #902000 } /* Keyword.Type */
+pre .m { color: #40A070 } /* Literal.Number */
+pre .s { color: #4070A0 } /* Literal.String */
+pre .na { color: #4070A0 } /* Name.Attribute */
+pre .nb { color: #007020 } /* Name.Builtin */
+pre .nc { color: #0E84B5; font-weight: bold } /* Name.Class */
+pre .no { color: #60ADD5 } /* Name.Constant */
+pre .nd { color: #555; font-weight: bold } /* Name.Decorator */
+pre .ni { color: #D55537; font-weight: bold } /* Name.Entity */
+pre .ne { color: #007020 } /* Name.Exception */
+pre .nf { color: #06287E } /* Name.Function */
+pre .nl { color: #002070; font-weight: bold } /* Name.Label */
+pre .nn { color: #0E84B5; font-weight: bold } /* Name.Namespace */
+pre .nt { color: #062873; font-weight: bold } /* Name.Tag */
+pre .nv { color: #BB60D5 } /* Name.Variable */
+pre .ow { color: #007020; font-weight: bold } /* Operator.Word */
+pre .w { color: #BBB } /* Text.Whitespace */
+pre .mb { color: #40A070 } /* Literal.Number.Bin */
+pre .mf { color: #40A070 } /* Literal.Number.Float */
+pre .mh { color: #40A070 } /* Literal.Number.Hex */
+pre .mi { color: #40A070 } /* Literal.Number.Integer */
+pre .mo { color: #40A070 } /* Literal.Number.Oct */
+pre .sa { color: #4070A0 } /* Literal.String.Affix */
+pre .sb { color: #4070A0 } /* Literal.String.Backtick */
+pre .sc { color: #4070A0 } /* Literal.String.Char */
+pre .dl { color: #4070A0 } /* Literal.String.Delimiter */
+pre .sd { color: #4070A0; font-style: italic } /* Literal.String.Doc */
+pre .s2 { color: #4070A0 } /* Literal.String.Double */
+pre .se { color: #4070A0; font-weight: bold } /* Literal.String.Escape */
+pre .sh { color: #4070A0 } /* Literal.String.Heredoc */
+pre .si { color: #70A0D0; font-style: italic } /* Literal.String.Interpol */
+pre .sx { color: #C65D09 } /* Literal.String.Other */
+pre .sr { color: #235388 } /* Literal.String.Regex */
+pre .s1 { color: #4070A0 } /* Literal.String.Single */
+pre .ss { color: #517918 } /* Literal.String.Symbol */
+pre .bp { color: #007020 } /* Name.Builtin.Pseudo */
+pre .fm { color: #06287E } /* Name.Function.Magic */
+pre .vc { color: #BB60D5 } /* Name.Variable.Class */
+pre .vg { color: #BB60D5 } /* Name.Variable.Global */
+pre .vi { color: #BB60D5 } /* Name.Variable.Instance */
+pre .vm { color: #BB60D5 } /* Name.Variable.Magic */
+pre .il { color: #40A070 } /* Literal.Number.Integer.Long */</style></head><body><h1>Zero to Google: DSA, System Design and Test Engineering for QA Engineers</h1>
+<p><strong>Volume 4 - English for technical interviews</strong></p>
+<p>Written for Sahil Sharma - SDET preparing for Google SWE-Test / SDET (India). Study it with the web app https://sahil804-ps.github.io/google-prep/ and Google NotebookLM.</p>
+<h2>Contents</h2>
+<ol>
+<li>Grammar 1: Present simple vs present continuous</li>
+<li>Grammar 2: Past simple vs present perfect</li>
+<li>Grammar 3: Articles: a, an, the</li>
+<li>Grammar 4: Prepositions: in, on, at</li>
+<li>Grammar 5: Questions without mistakes</li>
+<li>Grammar 6: Explaining code: sequence words</li>
+<li>Grammar 7: Talking about complexity</li>
+<li>Grammar 8: Modal verbs: can, could, should, would, might</li>
+<li>Grammar 9: Conditionals (if)</li>
+<li>Grammar 10: Passive voice for technical writing</li>
+<li>Grammar 11: Common Indian-English mistakes (1)</li>
+<li>Grammar 12: Common Indian-English mistakes (2)</li>
+<li>Grammar 13: Comparatives and superlatives</li>
+<li>Grammar 14: Linking words: however, although, therefore</li>
+<li>Grammar 15: Reported speech in stories</li>
+<li>Grammar 16: Countable vs uncountable</li>
+<li>Grammar 17: Gerunds and infinitives</li>
+<li>Grammar 18: Polite language for disagreements</li>
+<li>Grammar 19: Pronunciation: tech words</li>
+<li>Grammar 20: Talking about numbers and impact</li>
+<li>Grammar 21: Thinking aloud in a coding interview</li>
+<li>Grammar 22: Closing the interview well</li>
+<li>Interview phrase bank</li>
+<li>Speaking practice prompts</li>
+</ol>
+<hr />
+<h1>Grammar 1: Present simple vs present continuous</h1>
+<ul>
+<li>Present simple = habits, facts: &quot;I <strong>write</strong> test cases every day.&quot;</li>
+<li>Present continuous = right now / temporary: &quot;I <strong>am writing</strong> a test right now.&quot;</li>
+<li>Stative verbs (know, have, want, believe) are NOT used in -ing: &quot;I <strong>know</strong> Python&quot;, not &quot;I am knowing&quot;.</li>
+</ul>
+<blockquote>
+<p><strong>Hindi tip:</strong> Hum aksar &quot;I am having 5 years experience&quot; bolte hain - galat. &quot;have&quot; possession hai, -ing nahi lagta.</p>
+</blockquote>
+<h2>Quiz</h2>
+<ol>
+<li>I ___ 5 years of experience in testing.
+<ul>
+<li>A) am having</li>
+<li>B) have</li>
+<li>C) having</li>
+</ul>
+</li>
+<li>Right now I ___ on an API automation project.
+<ul>
+<li>A) work</li>
+<li>B) am working</li>
+<li>C) worked</li>
+</ul>
+</li>
+<li>She ___ Selenium very well.
+<ul>
+<li>A) is knowing</li>
+<li>B) knows</li>
+<li>C) know</li>
+</ul>
+</li>
+<li>Our CI pipeline ___ every night at 2 AM.
+<ul>
+<li>A) runs</li>
+<li>B) is running</li>
+<li>C) run</li>
+</ul>
+</li>
+</ol>
+<h2>Answer key</h2>
+<ol>
+<li><strong>B</strong> - have. have = possession, no -ing.</li>
+<li><strong>B</strong> - am working. Temporary / current activity.</li>
+<li><strong>B</strong> - knows. know is stative; third person -s.</li>
+<li><strong>A</strong> - runs. Schedule / habit = present simple.</li>
+</ol>
+<hr />
+<h1>Grammar 2: Past simple vs present perfect</h1>
+<ul>
+<li>Past simple = finished time: &quot;I <strong>joined</strong> Antier in 2020.&quot;</li>
+<li>Present perfect = experience / result now, no specific time: &quot;I <strong>have worked</strong> on blockchain testing.&quot;</li>
+<li>With &quot;since / for&quot; until now: &quot;I <strong>have been</strong> at Antier <strong>since</strong> 2020.&quot;</li>
+</ul>
+<blockquote>
+<p><strong>Hindi tip:</strong> Agar time bataya (yesterday, in 2020, last year) to past simple. &quot;I have done it yesterday&quot; galat hai.</p>
+</blockquote>
+<h2>Quiz</h2>
+<ol>
+<li>I ___ the bug yesterday.
+<ul>
+<li>A) have found</li>
+<li>B) found</li>
+<li>C) find</li>
+</ul>
+</li>
+<li>I ___ at Antier since 2020.
+<ul>
+<li>A) work</li>
+<li>B) worked</li>
+<li>C) have worked</li>
+</ul>
+</li>
+<li>___ you ever used Playwright?
+<ul>
+<li>A) Did</li>
+<li>B) Have</li>
+<li>C) Do</li>
+</ul>
+</li>
+<li>We ___ the release last Friday.
+<ul>
+<li>A) shipped</li>
+<li>B) have shipped</li>
+<li>C) ship</li>
+</ul>
+</li>
+</ol>
+<h2>Answer key</h2>
+<ol>
+<li><strong>B</strong> - found. Specific past time -&gt; past simple.</li>
+<li><strong>C</strong> - have worked. since + until now -&gt; present perfect.</li>
+<li><strong>B</strong> - Have. Experience question -&gt; present perfect.</li>
+<li><strong>A</strong> - shipped. last Friday = finished time.</li>
+</ol>
+<hr />
+<h1>Grammar 3: Articles: a, an, the</h1>
+<ul>
+<li>a/an = one of many, first mention: &quot;I found <strong>a</strong> bug.&quot;</li>
+<li>an before a vowel SOUND: &quot;<strong>an</strong> API&quot;, &quot;<strong>an</strong> hour&quot;, but &quot;<strong>a</strong> user&quot;.</li>
+<li>the = specific / already known: &quot;<strong>The</strong> bug was in the login module.&quot;</li>
+<li>No article for general plural/uncountable: &quot;Tests are important.&quot;</li>
+</ul>
+<blockquote>
+<p><strong>Hindi tip:</strong> Hindi mein article nahi hota, isliye hum chhod dete hain. &quot;I found bug&quot; -&gt; &quot;I found a bug&quot;.</p>
+</blockquote>
+<h2>Quiz</h2>
+<ol>
+<li>I wrote ___ automation framework in Python.
+<ul>
+<li>A) a</li>
+<li>B) an</li>
+<li>C) the</li>
+</ul>
+</li>
+<li>___ user could not log in.
+<ul>
+<li>A) An</li>
+<li>B) A</li>
+<li>C) The (first mention)</li>
+</ul>
+</li>
+<li>I fixed a bug. ___ bug was in the payment module.
+<ul>
+<li>A) A</li>
+<li>B) The</li>
+<li>C) -</li>
+</ul>
+</li>
+<li>It took ___ hour to run the suite.
+<ul>
+<li>A) a</li>
+<li>B) an</li>
+<li>C) the</li>
+</ul>
+</li>
+</ol>
+<h2>Answer key</h2>
+<ol>
+<li><strong>B</strong> - an. &quot;automation&quot; starts with a vowel sound.</li>
+<li><strong>B</strong> - A. &quot;user&quot; sounds like &quot;you-ser&quot; -&gt; a.</li>
+<li><strong>B</strong> - The. Second mention -&gt; the.</li>
+<li><strong>B</strong> - an. &quot;hour&quot; has a silent h -&gt; an.</li>
+</ol>
+<hr />
+<h1>Grammar 4: Prepositions: in, on, at</h1>
+<ul>
+<li>Time: <strong>at</strong> 5 PM, <strong>on</strong> Monday, <strong>in</strong> October / <strong>in</strong> 2026</li>
+<li>Place: <strong>at</strong> the office, <strong>in</strong> Mohali, <strong>on</strong> the dashboard / <strong>on</strong> GitHub</li>
+<li>Work: work <strong>on</strong> a project, work <strong>at/for</strong> a company, work <strong>in</strong> a team</li>
+</ul>
+<blockquote>
+<p><strong>Hindi tip:</strong> &quot;I am working in Antier&quot; -&gt; &quot;I work at Antier&quot;. &quot;discuss about&quot; galat hai - sirf &quot;discuss&quot;.</p>
+</blockquote>
+<h2>Quiz</h2>
+<ol>
+<li>The interview is ___ Monday ___ 11 AM.
+<ul>
+<li>A) in / at</li>
+<li>B) on / at</li>
+<li>C) at / on</li>
+</ul>
+</li>
+<li>I work ___ Antier Solutions.
+<ul>
+<li>A) in</li>
+<li>B) at</li>
+<li>C) on</li>
+</ul>
+</li>
+<li>The code is ___ GitHub.
+<ul>
+<li>A) in</li>
+<li>B) at</li>
+<li>C) on</li>
+</ul>
+</li>
+<li>Let us ___ the test plan.
+<ul>
+<li>A) discuss about</li>
+<li>B) discuss</li>
+<li>C) discuss on</li>
+</ul>
+</li>
+</ol>
+<h2>Answer key</h2>
+<ol>
+<li><strong>B</strong> - on / at. on + day, at + clock time.</li>
+<li><strong>B</strong> - at. work at a company.</li>
+<li><strong>C</strong> - on. on a platform/website.</li>
+<li><strong>B</strong> - discuss. discuss takes no preposition.</li>
+</ol>
+<hr />
+<h1>Grammar 5: Questions without mistakes</h1>
+<ul>
+<li>Yes/no: auxiliary first: &quot;<strong>Do</strong> you use Jira?&quot; &quot;<strong>Is</strong> the build green?&quot;</li>
+<li>Wh-: &quot;<strong>What does</strong> this function return?&quot; (not &quot;What this function returns?&quot;)</li>
+<li>Indirect questions keep normal order: &quot;Can you tell me <strong>what the input size is</strong>?&quot;</li>
+</ul>
+<blockquote>
+<p><strong>Hindi tip:</strong> Clarifying questions interview mein bahut important hain. &quot;What is the input size?&quot; ya &quot;Can I assume the input is sorted?&quot;</p>
+</blockquote>
+<h2>Quiz</h2>
+<ol>
+<li>___ the input always sorted?
+<ul>
+<li>A) Does</li>
+<li>B) Is</li>
+<li>C) Are</li>
+</ul>
+</li>
+<li>What ___ the function return for an empty list?
+<ul>
+<li>A) does</li>
+<li>B) do</li>
+<li>C) is</li>
+</ul>
+</li>
+<li>Can you tell me how big ___?
+<ul>
+<li>A) is the input</li>
+<li>B) the input is</li>
+<li>C) input is</li>
+</ul>
+</li>
+<li>___ I assume there are no duplicates?
+<ul>
+<li>A) Can</li>
+<li>B) Am</li>
+<li>C) Do</li>
+</ul>
+</li>
+</ol>
+<h2>Answer key</h2>
+<ol>
+<li><strong>B</strong> - Is. is + adjective.</li>
+<li><strong>A</strong> - does. third person singular -&gt; does.</li>
+<li><strong>B</strong> - the input is. Indirect question keeps normal order.</li>
+<li><strong>A</strong> - Can. Asking permission / assumption -&gt; Can/May.</li>
+</ol>
+<hr />
+<h1>Grammar 6: Explaining code: sequence words</h1>
+<ul>
+<li><strong>First</strong>, I will ... <strong>Then</strong> ... <strong>After that</strong> ... <strong>Finally</strong> ...</li>
+<li>&quot;I iterate over the array <strong>and</strong> for each element I check ...&quot;</li>
+<li>&quot;<strong>If</strong> the map contains the complement, <strong>then</strong> I return the indexes; <strong>otherwise</strong> I add the element.&quot;</li>
+</ul>
+<blockquote>
+<p><strong>Hindi tip:</strong> Interview mein code ke saath bolna zaroori hai. Short sentences + sequence words se clear lagta hai.</p>
+</blockquote>
+<h2>Quiz</h2>
+<ol>
+<li>___, I will sort the array. Then I will use two pointers.
+<ul>
+<li>A) Finally</li>
+<li>B) First</li>
+<li>C) Otherwise</li>
+</ul>
+</li>
+<li>If the sum is too small, I move the left pointer; ___, I move the right one.
+<ul>
+<li>A) otherwise</li>
+<li>B) first</li>
+<li>C) because</li>
+</ul>
+</li>
+<li>___, I return the result.
+<ul>
+<li>A) Finally</li>
+<li>B) Firstly then</li>
+<li>C) Since</li>
+</ul>
+</li>
+<li>I use a hash map ___ lookups are O(1).
+<ul>
+<li>A) so</li>
+<li>B) because</li>
+<li>C) but</li>
+</ul>
+</li>
+</ol>
+<h2>Answer key</h2>
+<ol>
+<li><strong>B</strong> - First. Starting a sequence.</li>
+<li><strong>A</strong> - otherwise. otherwise = else.</li>
+<li><strong>A</strong> - Finally. Last step.</li>
+<li><strong>B</strong> - because. Giving a reason.</li>
+</ol>
+<hr />
+<h1>Grammar 7: Talking about complexity</h1>
+<ul>
+<li>&quot;The time complexity <strong>is</strong> O(n) <strong>because</strong> we visit each element once.&quot;</li>
+<li>&quot;The space complexity is O(n) <strong>for</strong> the hash map.&quot;</li>
+<li>&quot;This is <strong>linear / logarithmic / quadratic</strong> time.&quot;</li>
+<li>&quot;We could <strong>trade</strong> space <strong>for</strong> time.&quot;</li>
+</ul>
+<blockquote>
+<p><strong>Hindi tip:</strong> Complexity bolte waqt hamesha &quot;because&quot; ke saath reason do.</p>
+</blockquote>
+<h2>Quiz</h2>
+<ol>
+<li>O(n^2) is called ___ time.
+<ul>
+<li>A) linear</li>
+<li>B) quadratic</li>
+<li>C) constant</li>
+</ul>
+</li>
+<li>O(log n) is called ___ time.
+<ul>
+<li>A) logarithmic</li>
+<li>B) linear</li>
+<li>C) exponential</li>
+</ul>
+</li>
+<li>The space is O(n) ___ the hash map.
+<ul>
+<li>A) for</li>
+<li>B) from</li>
+<li>C) at</li>
+</ul>
+</li>
+<li>We trade space ___ time.
+<ul>
+<li>A) to</li>
+<li>B) for</li>
+<li>C) with</li>
+</ul>
+</li>
+</ol>
+<h2>Answer key</h2>
+<ol>
+<li><strong>B</strong> - quadratic. n squared = quadratic.</li>
+<li><strong>A</strong> - logarithmic. log n = logarithmic.</li>
+<li><strong>A</strong> - for. &quot;for&quot; + what uses the space.</li>
+<li><strong>B</strong> - for. trade X for Y.</li>
+</ol>
+<hr />
+<h1>Grammar 8: Modal verbs: can, could, should, would, might</h1>
+<ul>
+<li><strong>can</strong> = ability: &quot;I can automate this.&quot;</li>
+<li><strong>could / might</strong> = possibility, polite: &quot;This could be a race condition.&quot;</li>
+<li><strong>should</strong> = advice: &quot;We should add a boundary test.&quot;</li>
+<li><strong>would</strong> = hypothetical / polite: &quot;I would start with unit tests.&quot;</li>
+</ul>
+<blockquote>
+<p><strong>Hindi tip:</strong> Interview mein &quot;I would...&quot; bahut useful hai: &quot;I would first clarify the requirements.&quot;</p>
+</blockquote>
+<h2>Quiz</h2>
+<ol>
+<li>I ___ start by asking about the input size.
+<ul>
+<li>A) would</li>
+<li>B) will be</li>
+<li>C) am</li>
+</ul>
+</li>
+<li>The test fails sometimes. It ___ be a timing issue.
+<ul>
+<li>A) must to</li>
+<li>B) might</li>
+<li>C) should to</li>
+</ul>
+</li>
+<li>We ___ add tests for empty input.
+<ul>
+<li>A) should</li>
+<li>B) should to</li>
+<li>C) must to</li>
+</ul>
+</li>
+<li>___ you repeat the question, please?
+<ul>
+<li>A) Can to</li>
+<li>B) Could</li>
+<li>C) Should</li>
+</ul>
+</li>
+</ol>
+<h2>Answer key</h2>
+<ol>
+<li><strong>A</strong> - would. Polite hypothetical plan.</li>
+<li><strong>B</strong> - might. Possibility.</li>
+<li><strong>A</strong> - should. Modal + base verb (no &quot;to&quot;).</li>
+<li><strong>B</strong> - Could. Polite request.</li>
+</ol>
+<hr />
+<h1>Grammar 9: Conditionals (if)</h1>
+<ul>
+<li>Zero: facts: &quot;If the input <strong>is</strong> empty, the function <strong>returns</strong> 0.&quot;</li>
+<li>First: real future: &quot;If I <strong>have</strong> time, I <strong>will optimise</strong> it.&quot;</li>
+<li>Second: hypothetical: &quot;If I <strong>had</strong> more memory, I <strong>would use</strong> a cache.&quot;</li>
+</ul>
+<blockquote>
+<p><strong>Hindi tip:</strong> &quot;If I will get time&quot; galat hai - if ke baad will nahi aata.</p>
+</blockquote>
+<h2>Quiz</h2>
+<ol>
+<li>If the list ___ empty, return None.
+<ul>
+<li>A) is</li>
+<li>B) will be</li>
+<li>C) would be</li>
+</ul>
+</li>
+<li>If I ___ more time, I would add caching.
+<ul>
+<li>A) have</li>
+<li>B) had</li>
+<li>C) will have</li>
+</ul>
+</li>
+<li>If the build fails, I ___ the logs.
+<ul>
+<li>A) check</li>
+<li>B) will checked</li>
+<li>C) would checked</li>
+</ul>
+</li>
+<li>If I get the offer, I ___ relocate.
+<ul>
+<li>A) will</li>
+<li>B) would had</li>
+<li>C) am</li>
+</ul>
+</li>
+</ol>
+<h2>Answer key</h2>
+<ol>
+<li><strong>A</strong> - is. Zero/first conditional: present after if.</li>
+<li><strong>B</strong> - had. Second conditional.</li>
+<li><strong>A</strong> - check. Fact / routine.</li>
+<li><strong>A</strong> - will. First conditional.</li>
+</ol>
+<hr />
+<h1>Grammar 10: Passive voice for technical writing</h1>
+<ul>
+<li>Active: &quot;I fixed the bug.&quot; Passive: &quot;The bug <strong>was fixed</strong>.&quot;</li>
+<li>Use passive when the action matters more than the person: &quot;Tests <strong>are run</strong> on every commit.&quot;</li>
+<li>In interviews, prefer ACTIVE for your own work: &quot;I designed...&quot; (shows ownership).</li>
+</ul>
+<blockquote>
+<p><strong>Hindi tip:</strong> Behavioral answers mein &quot;I&quot; use karo, &quot;it was done&quot; nahi - credit lo.</p>
+</blockquote>
+<h2>Quiz</h2>
+<ol>
+<li>Tests ___ on every pull request.
+<ul>
+<li>A) run</li>
+<li>B) are run</li>
+<li>C) is run</li>
+</ul>
+</li>
+<li>The issue ___ last week.
+<ul>
+<li>A) was fixed</li>
+<li>B) fixed</li>
+<li>C) is fix</li>
+</ul>
+</li>
+<li>Better for a behavioural answer:
+<ul>
+<li>A) The framework was built.</li>
+<li>B) I built the framework.</li>
+<li>C) Framework built.</li>
+</ul>
+</li>
+<li>The report ___ automatically every morning.
+<ul>
+<li>A) generates</li>
+<li>B) is generated</li>
+<li>C) generated</li>
+</ul>
+</li>
+</ol>
+<h2>Answer key</h2>
+<ol>
+<li><strong>B</strong> - are run. Plural passive present.</li>
+<li><strong>A</strong> - was fixed. Passive past.</li>
+<li><strong>B</strong> - I built the framework.. Active shows ownership.</li>
+<li><strong>B</strong> - is generated. Report does not generate itself.</li>
+</ol>
+<hr />
+<h1>Grammar 11: Common Indian-English mistakes (1)</h1>
+<ul>
+<li>&quot;Do the needful&quot; -&gt; &quot;Please take care of this&quot;</li>
+<li>&quot;Revert back&quot; -&gt; &quot;Reply&quot; (revert = go back to old state)</li>
+<li>&quot;Prepone&quot; -&gt; &quot;Move earlier&quot;</li>
+<li>&quot;I have a doubt&quot; -&gt; &quot;I have a question&quot;</li>
+<li>&quot;Out of station&quot; -&gt; &quot;Out of town / travelling&quot;</li>
+</ul>
+<blockquote>
+<p><strong>Hindi tip:</strong> Ye India mein chalte hain, par global interview mein clear English better hai.</p>
+</blockquote>
+<h2>Quiz</h2>
+<ol>
+<li>Better: &quot;Please ___ by Friday.&quot;
+<ul>
+<li>A) revert back</li>
+<li>B) reply</li>
+<li>C) revert</li>
+</ul>
+</li>
+<li>Better: &quot;I have a ___ about the requirement.&quot;
+<ul>
+<li>A) doubt</li>
+<li>B) question</li>
+<li>C) query back</li>
+</ul>
+</li>
+<li>Better: &quot;Can we ___ the meeting?&quot;
+<ul>
+<li>A) prepone</li>
+<li>B) move earlier</li>
+<li>C) pre-move</li>
+</ul>
+</li>
+<li>Better: &quot;I will be ___ next week.&quot;
+<ul>
+<li>A) out of station</li>
+<li>B) travelling</li>
+<li>C) out station</li>
+</ul>
+</li>
+</ol>
+<h2>Answer key</h2>
+<ol>
+<li><strong>B</strong> - reply. revert means undo.</li>
+<li><strong>B</strong> - question. doubt = suspicion in global English.</li>
+<li><strong>B</strong> - move earlier. prepone is Indian English.</li>
+<li><strong>B</strong> - travelling. Clear for global audience.</li>
+</ol>
+<hr />
+<h1>Grammar 12: Common Indian-English mistakes (2)</h1>
+<ul>
+<li>&quot;I am having a question&quot; -&gt; &quot;I have a question&quot;</li>
+<li>&quot;He is working here since 2 years&quot; -&gt; &quot;He has been working here for 2 years&quot;</li>
+<li>&quot;Myself Sahil&quot; -&gt; &quot;I am Sahil&quot; / &quot;My name is Sahil&quot;</li>
+<li>&quot;Kindly do it fast&quot; -&gt; &quot;Could you please prioritise this?&quot;</li>
+</ul>
+<blockquote>
+<p><strong>Hindi tip:</strong> &quot;Myself Sahil&quot; interview ke shuru mein mat bolna. &quot;Hi, I am Sahil&quot; bolo.</p>
+</blockquote>
+<h2>Quiz</h2>
+<ol>
+<li>Best introduction:
+<ul>
+<li>A) Myself Sahil.</li>
+<li>B) I am Sahil.</li>
+<li>C) Me Sahil.</li>
+</ul>
+</li>
+<li>He has been working here ___ 2 years.
+<ul>
+<li>A) since</li>
+<li>B) for</li>
+<li>C) from</li>
+</ul>
+</li>
+<li>I ___ a question about the API.
+<ul>
+<li>A) am having</li>
+<li>B) have</li>
+<li>C) having</li>
+</ul>
+</li>
+<li>Since ___ I have been testing APIs.
+<ul>
+<li>A) 3 years</li>
+<li>B) 2021</li>
+<li>C) long time</li>
+</ul>
+</li>
+</ol>
+<h2>Answer key</h2>
+<ol>
+<li><strong>B</strong> - I am Sahil.. Natural introduction.</li>
+<li><strong>B</strong> - for. for + duration, since + start point.</li>
+<li><strong>B</strong> - have. Stative have.</li>
+<li><strong>B</strong> - 2021. since + point in time.</li>
+</ol>
+<hr />
+<h1>Grammar 13: Comparatives and superlatives</h1>
+<ul>
+<li>short: fast -&gt; faster -&gt; the fastest</li>
+<li>long: efficient -&gt; more efficient -&gt; the most efficient</li>
+<li>irregular: good -&gt; better -&gt; best; bad -&gt; worse -&gt; worst</li>
+<li>&quot;This approach is <strong>more efficient than</strong> brute force.&quot;</li>
+</ul>
+<blockquote>
+<p><strong>Hindi tip:</strong> &quot;more faster&quot; galat hai - double comparative mat lagao.</p>
+</blockquote>
+<h2>Quiz</h2>
+<ol>
+<li>A hash map is ___ than a list for lookups.
+<ul>
+<li>A) more faster</li>
+<li>B) faster</li>
+<li>C) fastest</li>
+</ul>
+</li>
+<li>This is the ___ solution so far.
+<ul>
+<li>A) most efficient</li>
+<li>B) more efficient</li>
+<li>C) efficientest</li>
+</ul>
+</li>
+<li>The second approach is ___ than the first.
+<ul>
+<li>A) gooder</li>
+<li>B) better</li>
+<li>C) more good</li>
+</ul>
+</li>
+<li>Brute force is ___ for large inputs.
+<ul>
+<li>A) worse</li>
+<li>B) badder</li>
+<li>C) more bad</li>
+</ul>
+</li>
+</ol>
+<h2>Answer key</h2>
+<ol>
+<li><strong>B</strong> - faster. One comparative only.</li>
+<li><strong>A</strong> - most efficient. Long adjective superlative.</li>
+<li><strong>B</strong> - better. Irregular.</li>
+<li><strong>A</strong> - worse. Irregular.</li>
+</ol>
+<hr />
+<h1>Grammar 14: Linking words: however, although, therefore</h1>
+<ul>
+<li><strong>However</strong> (contrast, new sentence): &quot;It is fast. However, it uses more memory.&quot;</li>
+<li><strong>Although</strong> (contrast, same sentence): &quot;Although it is fast, it uses more memory.&quot;</li>
+<li><strong>Therefore / So</strong> (result): &quot;The input is sorted, so I will use binary search.&quot;</li>
+</ul>
+<blockquote>
+<p><strong>Hindi tip:</strong> Trade-offs explain karne ke liye perfect: &quot;It is faster; however, it needs extra space.&quot;</p>
+</blockquote>
+<h2>Quiz</h2>
+<ol>
+<li>It is O(n). ___, it needs O(n) extra space.
+<ul>
+<li>A) However</li>
+<li>B) Although</li>
+<li>C) Because</li>
+</ul>
+</li>
+<li>___ the test passed locally, it failed in CI.
+<ul>
+<li>A) However</li>
+<li>B) Although</li>
+<li>C) Therefore</li>
+</ul>
+</li>
+<li>The array is sorted; ___, binary search works.
+<ul>
+<li>A) therefore</li>
+<li>B) although</li>
+<li>C) however</li>
+</ul>
+</li>
+<li>&quot;Although ... but ...&quot; is:
+<ul>
+<li>A) Correct</li>
+<li>B) Wrong - use only one</li>
+<li>C) Formal</li>
+</ul>
+</li>
+</ol>
+<h2>Answer key</h2>
+<ol>
+<li><strong>A</strong> - However. Contrast, new sentence.</li>
+<li><strong>B</strong> - Although. Contrast in one sentence.</li>
+<li><strong>A</strong> - therefore. Result.</li>
+<li><strong>B</strong> - Wrong - use only one. Do not use both.</li>
+</ol>
+<hr />
+<h1>Grammar 15: Reported speech in stories</h1>
+<ul>
+<li>Direct: The PM said, &quot;We <strong>need</strong> it today.&quot;</li>
+<li>Reported: The PM said (that) we <strong>needed</strong> it that day.</li>
+<li>&quot;My manager asked me <strong>to</strong> lead the testing.&quot; / &quot;He told me <strong>that</strong> the release <strong>was</strong> delayed.&quot;</li>
+</ul>
+<blockquote>
+<p><strong>Hindi tip:</strong> Behavioral stories mein bahut kaam aata hai: &quot;My manager asked me to...&quot;</p>
+</blockquote>
+<h2>Quiz</h2>
+<ol>
+<li>My manager asked me ___ the regression suite.
+<ul>
+<li>A) own</li>
+<li>B) to own</li>
+<li>C) owning</li>
+</ul>
+</li>
+<li>He said that the build ___ broken.
+<ul>
+<li>A) is been</li>
+<li>B) was</li>
+<li>C) were</li>
+</ul>
+</li>
+<li>She told ___ the deadline had moved.
+<ul>
+<li>A) to me</li>
+<li>B) me</li>
+<li>C) at me</li>
+</ul>
+</li>
+<li>He ___ that the fix was ready.
+<ul>
+<li>A) said me</li>
+<li>B) said</li>
+<li>C) told</li>
+</ul>
+</li>
+</ol>
+<h2>Answer key</h2>
+<ol>
+<li><strong>B</strong> - to own. ask someone to do.</li>
+<li><strong>B</strong> - was. Backshift in reported speech.</li>
+<li><strong>B</strong> - me. tell someone (no &quot;to&quot;).</li>
+<li><strong>B</strong> - said. say + that; tell + person.</li>
+</ol>
+<hr />
+<h1>Grammar 16: Countable vs uncountable</h1>
+<ul>
+<li>Uncountable (no -s): information, feedback, advice, equipment, software, code, data (usually)</li>
+<li>&quot;a lot of feedback&quot;, &quot;a piece of advice&quot;, &quot;some code&quot;</li>
+<li>Countable: bug(s), test(s), issue(s): &quot;many bugs&quot;, &quot;few tests&quot;</li>
+</ul>
+<blockquote>
+<p><strong>Hindi tip:</strong> &quot;Feedbacks&quot;, &quot;softwares&quot;, &quot;codes&quot; galat hain.</p>
+</blockquote>
+<h2>Quiz</h2>
+<ol>
+<li>Thank you for the ___.
+<ul>
+<li>A) feedbacks</li>
+<li>B) feedback</li>
+<li>C) a feedback</li>
+</ul>
+</li>
+<li>We found ___ bugs in this release.
+<ul>
+<li>A) much</li>
+<li>B) many</li>
+<li>C) a</li>
+</ul>
+</li>
+<li>I wrote some ___ for the parser.
+<ul>
+<li>A) codes</li>
+<li>B) code</li>
+<li>C) a code</li>
+</ul>
+</li>
+<li>Can I give you a piece of ___?
+<ul>
+<li>A) advice</li>
+<li>B) advices</li>
+<li>C) advise</li>
+</ul>
+</li>
+</ol>
+<h2>Answer key</h2>
+<ol>
+<li><strong>B</strong> - feedback. feedback is uncountable.</li>
+<li><strong>B</strong> - many. bugs are countable.</li>
+<li><strong>B</strong> - code. code (programming) is uncountable.</li>
+<li><strong>A</strong> - advice. advice = noun, uncountable.</li>
+</ol>
+<hr />
+<h1>Grammar 17: Gerunds and infinitives</h1>
+<ul>
+<li>Verb + -ing: enjoy, avoid, finish, suggest, consider: &quot;I enjoy <strong>debugging</strong>.&quot;</li>
+<li>Verb + to: want, decide, plan, hope, need: &quot;I decided <strong>to automate</strong> it.&quot;</li>
+<li>&quot;I am looking forward <strong>to working</strong> with you.&quot; (to + -ing here)</li>
+</ul>
+<blockquote>
+<p><strong>Hindi tip:</strong> &quot;Looking forward to hear&quot; galat hai -&gt; &quot;looking forward to hearing&quot;.</p>
+</blockquote>
+<h2>Quiz</h2>
+<ol>
+<li>I enjoy ___ complex bugs.
+<ul>
+<li>A) to solve</li>
+<li>B) solving</li>
+<li>C) solve</li>
+</ul>
+</li>
+<li>We decided ___ Playwright.
+<ul>
+<li>A) using</li>
+<li>B) to use</li>
+<li>C) use</li>
+</ul>
+</li>
+<li>I look forward to ___ from you.
+<ul>
+<li>A) hear</li>
+<li>B) hearing</li>
+<li>C) heard</li>
+</ul>
+</li>
+<li>I suggest ___ a retry.
+<ul>
+<li>A) adding</li>
+<li>B) to add</li>
+<li>C) add</li>
+</ul>
+</li>
+</ol>
+<h2>Answer key</h2>
+<ol>
+<li><strong>B</strong> - solving. enjoy + -ing.</li>
+<li><strong>B</strong> - to use. decide + to.</li>
+<li><strong>B</strong> - hearing. look forward to + -ing.</li>
+<li><strong>A</strong> - adding. suggest + -ing.</li>
+</ol>
+<hr />
+<h1>Grammar 18: Polite language for disagreements</h1>
+<ul>
+<li>&quot;I see your point, but have we considered ...?&quot;</li>
+<li>&quot;That makes sense. One concern I have is ...&quot;</li>
+<li>&quot;Could we try ... and measure the result?&quot;</li>
+<li>Avoid: &quot;You are wrong&quot;, &quot;That is not possible&quot;.</li>
+</ul>
+<blockquote>
+<p><strong>Hindi tip:</strong> Googleyness = respectful disagreement. Data aur user ka focus rakho.</p>
+</blockquote>
+<h2>Quiz</h2>
+<ol>
+<li>Most collaborative:
+<ul>
+<li>A) You are wrong.</li>
+<li>B) I see your point, but one concern is...</li>
+<li>C) No, that will not work.</li>
+</ul>
+</li>
+<li>Polite suggestion:
+<ul>
+<li>A) Do it my way.</li>
+<li>B) Could we try a small experiment?</li>
+<li>C) Just change it.</li>
+</ul>
+</li>
+<li>Asking for clarity:
+<ul>
+<li>A) What you mean?</li>
+<li>B) Could you clarify what you mean by...?</li>
+<li>C) Explain.</li>
+</ul>
+</li>
+<li>Admitting uncertainty:
+<ul>
+<li>A) I don't know.</li>
+<li>B) I am not sure, but my guess is... and I would verify by...</li>
+<li>C) No idea.</li>
+</ul>
+</li>
+</ol>
+<h2>Answer key</h2>
+<ol>
+<li><strong>B</strong> - I see your point, but one concern is.... Acknowledge then add your view.</li>
+<li><strong>B</strong> - Could we try a small experiment?. Suggest, do not order.</li>
+<li><strong>B</strong> - Could you clarify what you mean by...?. Polite + correct order.</li>
+<li><strong>B</strong> - I am not sure, but my guess is... and I would verify by.... Show how you would find out.</li>
+</ol>
+<hr />
+<h1>Grammar 19: Pronunciation: tech words</h1>
+<ul>
+<li><strong>cache</strong> = &quot;cash&quot; (not &quot;catch-ee&quot;)</li>
+<li><strong>queue</strong> = &quot;kyoo&quot;</li>
+<li><strong>SQL</strong> = &quot;S-Q-L&quot; or &quot;sequel&quot;</li>
+<li><strong>Linux</strong> = &quot;LIN-ux&quot;</li>
+<li><strong>data</strong> = &quot;DAY-ta&quot; or &quot;DAA-ta&quot; (both OK)</li>
+<li><strong>algorithm</strong> = &quot;AL-go-ri-thum&quot;</li>
+<li><strong>async</strong> = &quot;AY-sink&quot;</li>
+</ul>
+<blockquote>
+<p><strong>Hindi tip:</strong> Har word ko YouTube pe &quot;how to pronounce X&quot; search karke suno, phir 5 baar bolo.</p>
+</blockquote>
+<h2>Quiz</h2>
+<ol>
+<li>&quot;cache&quot; sounds like:
+<ul>
+<li>A) catch</li>
+<li>B) cash</li>
+<li>C) ka-chay</li>
+</ul>
+</li>
+<li>&quot;queue&quot; sounds like:
+<ul>
+<li>A) kyoo</li>
+<li>B) kway-way</li>
+<li>C) q-u-e</li>
+</ul>
+</li>
+<li>Stress in &quot;algorithm&quot; is on:
+<ul>
+<li>A) AL</li>
+<li>B) GO</li>
+<li>C) RITHM</li>
+</ul>
+</li>
+<li>&quot;async&quot; is said:
+<ul>
+<li>A) ay-sink</li>
+<li>B) a-sync-k</li>
+<li>C) ass-ink</li>
+</ul>
+</li>
+</ol>
+<h2>Answer key</h2>
+<ol>
+<li><strong>B</strong> - cash. Same as money &quot;cash&quot;.</li>
+<li><strong>A</strong> - kyoo. Just the letter Q.</li>
+<li><strong>A</strong> - AL. AL-go-rithm.</li>
+<li><strong>A</strong> - ay-sink. AY-sink.</li>
+</ol>
+<hr />
+<h1>Grammar 20: Talking about numbers and impact</h1>
+<ul>
+<li>&quot;We <strong>reduced</strong> regression time <strong>from</strong> 6 hours <strong>to</strong> 2 hours.&quot;</li>
+<li>&quot;Test coverage <strong>increased by</strong> 20 percent.&quot;</li>
+<li>&quot;<strong>Around / roughly</strong> 200 test cases.&quot;</li>
+<li>Only use numbers you can defend in the interview.</li>
+</ul>
+<blockquote>
+<p><strong>Hindi tip:</strong> Impact ko numbers mein bolo, par sirf sach wale numbers.</p>
+</blockquote>
+<h2>Quiz</h2>
+<ol>
+<li>We reduced the run time ___ 6 hours ___ 2 hours.
+<ul>
+<li>A) from / to</li>
+<li>B) by / to</li>
+<li>C) to / from</li>
+</ul>
+</li>
+<li>Coverage increased ___ 20 percent.
+<ul>
+<li>A) with</li>
+<li>B) by</li>
+<li>C) of</li>
+</ul>
+</li>
+<li>For an estimate, say:
+<ul>
+<li>A) exactly 213.6</li>
+<li>B) roughly 200</li>
+<li>C) many many</li>
+</ul>
+</li>
+<li>Bugs ___ by half after the change.
+<ul>
+<li>A) dropped</li>
+<li>B) were drop</li>
+<li>C) dropping</li>
+</ul>
+</li>
+</ol>
+<h2>Answer key</h2>
+<ol>
+<li><strong>A</strong> - from / to. from X to Y.</li>
+<li><strong>B</strong> - by. increase by an amount.</li>
+<li><strong>B</strong> - roughly 200. Natural estimate.</li>
+<li><strong>A</strong> - dropped. Past simple verb.</li>
+</ol>
+<hr />
+<h1>Grammar 21: Thinking aloud in a coding interview</h1>
+<ul>
+<li>&quot;Let me make sure I understand the problem ...&quot;</li>
+<li>&quot;A brute-force approach would be ..., which is O(n^2). Can we do better?&quot;</li>
+<li>&quot;I am thinking of using ... because ...&quot;</li>
+<li>&quot;Let me walk through an example to verify.&quot;</li>
+<li>&quot;I think there is an edge case when ...&quot;</li>
+</ul>
+<blockquote>
+<p><strong>Hindi tip:</strong> Silence sabse bada problem hai. Har 20-30 second mein bolte raho kya soch rahe ho.</p>
+</blockquote>
+<h2>Quiz</h2>
+<ol>
+<li>Best opening:
+<ul>
+<li>A) Starts coding immediately</li>
+<li>B) Let me make sure I understand the problem...</li>
+<li>C) This is easy.</li>
+</ul>
+</li>
+<li>After brute force, say:
+<ul>
+<li>A) Done.</li>
+<li>B) Can we do better?</li>
+<li>C) That is the answer.</li>
+</ul>
+</li>
+<li>Before finishing, you should:
+<ul>
+<li>A) Walk through an example</li>
+<li>B) Stay silent</li>
+<li>C) Delete comments</li>
+</ul>
+</li>
+<li>If stuck, say:
+<ul>
+<li>A) I give up.</li>
+<li>B) Let me think about which data structure helps here...</li>
+<li>C) ...silence...</li>
+</ul>
+</li>
+</ol>
+<h2>Answer key</h2>
+<ol>
+<li><strong>B</strong> - Let me make sure I understand the problem.... Clarify first.</li>
+<li><strong>B</strong> - Can we do better?. Show optimisation thinking.</li>
+<li><strong>A</strong> - Walk through an example. Dry run / test.</li>
+<li><strong>B</strong> - Let me think about which data structure helps here.... Keep thinking aloud.</li>
+</ol>
+<hr />
+<h1>Grammar 22: Closing the interview well</h1>
+<ul>
+<li>&quot;Thank you, I really enjoyed this problem.&quot;</li>
+<li>Questions to ask: &quot;What does a typical day look like for an engineer on this team?&quot;, &quot;How does the team handle flaky tests / test infrastructure?&quot;, &quot;What would success look like in the first 6 months?&quot;</li>
+<li>Avoid asking about salary in technical rounds.</li>
+</ul>
+<blockquote>
+<p><strong>Hindi tip:</strong> Hamesha 2 sawaal ready rakho. &quot;No questions&quot; mat bolo.</p>
+</blockquote>
+<h2>Quiz</h2>
+<ol>
+<li>Good question to ask:
+<ul>
+<li>A) How much leave do I get?</li>
+<li>B) How does the team decide what to automate?</li>
+<li>C) Is this round hard?</li>
+</ul>
+</li>
+<li>If asked &quot;Any questions?&quot;, you should:
+<ul>
+<li>A) Say no</li>
+<li>B) Ask 1-2 thoughtful questions</li>
+<li>C) Ask about salary</li>
+</ul>
+</li>
+<li>Closing line:
+<ul>
+<li>A) Bye.</li>
+<li>B) Thank you, I enjoyed solving this.</li>
+<li>C) Did I pass?</li>
+</ul>
+</li>
+<li>Best time to discuss salary:
+<ul>
+<li>A) Coding round</li>
+<li>B) With the recruiter</li>
+<li>C) Never</li>
+</ul>
+</li>
+</ol>
+<h2>Answer key</h2>
+<ol>
+<li><strong>B</strong> - How does the team decide what to automate?. Shows interest in the work.</li>
+<li><strong>B</strong> - Ask 1-2 thoughtful questions. Always have questions.</li>
+<li><strong>B</strong> - Thank you, I enjoyed solving this.. Polite and positive.</li>
+<li><strong>B</strong> - With the recruiter. Recruiter conversation.</li>
+</ol>
+<hr />
+<h1>Interview phrase bank</h1>
+<p>Say each phrase out loud three times. Use them in mock interviews.</p>
+<ol>
+<li>Let me make sure I understand the problem correctly.</li>
+<li>Can I assume the input fits in memory?</li>
+<li>Could you give me an example input and output?</li>
+<li>What should happen if the input is empty?</li>
+<li>A brute-force approach would be to ...</li>
+<li>This would take O(n squared) time. Can we do better?</li>
+<li>I am thinking of using a hash map because ...</li>
+<li>Let me walk through an example to check my logic.</li>
+<li>I think there is an edge case when ...</li>
+<li>The trade-off here is time versus space.</li>
+<li>Let me write a quick test for this.</li>
+<li>I would start by clarifying the requirements.</li>
+<li>Before I design tests, I want to understand the users.</li>
+<li>I would prioritise the tests by risk and impact.</li>
+<li>For the happy path, I would check ...</li>
+<li>For boundary cases, I would test ...</li>
+<li>I would automate this at the unit level because ...</li>
+<li>This is better covered by an integration test.</li>
+<li>To reduce flakiness, I would ...</li>
+<li>I would monitor this in production using ...</li>
+<li>That is a good point. One concern I have is ...</li>
+<li>I see what you mean. Have we considered ...?</li>
+<li>I am not completely sure, but my guess is ...</li>
+<li>Let me think about that for a moment.</li>
+<li>Could you repeat the last part, please?</li>
+<li>In my current role, I am responsible for ...</li>
+<li>One challenge I faced was ...</li>
+<li>What I learned from that was ...</li>
+<li>As a result, the team was able to ...</li>
+<li>I took ownership of ...</li>
+<li>I collaborated with the developers to ...</li>
+<li>The root cause turned out to be ...</li>
+<li>We reduced the time from ... to ...</li>
+<li>If I had more time, I would ...</li>
+<li>To summarise, my approach is ...</li>
+<li>Thank you, I really enjoyed this discussion.</li>
+<li>What does success look like for this role?</li>
+<li>How does the team approach test infrastructure?</li>
+<li>I am excited about this role because ...</li>
+<li>I am comfortable working with ambiguity.</li>
+</ol>
+<hr />
+<h1>Speaking practice prompts</h1>
+<p>Shadowing: play a 1-minute clip of a clear speaker (e.g. a Google I/O talk or a NeetCode explanation), pause after each sentence and repeat it with the same speed and stress. Do 5 minutes.</p>
+<p>Filler words to avoid: <em>um</em>, <em>umm</em>, <em>uh</em>, <em>basically</em>, <em>actually</em>, <em>like</em>, <em>you know</em>, <em>so yeah</em>, <em>kind of</em>, <em>sort of</em>, <em>literally</em></p>
+<ol>
+<li>Introduce yourself in 75 seconds: role, experience, one achievement, why Google.</li>
+<li>Explain today's first DSA problem and your approach, as if to an interviewer.</li>
+<li>Explain the time and space complexity of your last solution and why.</li>
+<li>Describe your current project at work to someone non-technical.</li>
+<li>Explain the test pyramid and why it matters.</li>
+<li>Explain what a flaky test is and how you would deal with it.</li>
+<li>Tell a STAR story: a critical bug you found.</li>
+<li>Explain the difference between a mock, a stub and a fake.</li>
+<li>Describe how you would test a login page.</li>
+<li>Explain how a hash map works internally.</li>
+<li>Explain why Google, and why a test engineering role.</li>
+<li>Explain what CI/CD is to a new joiner.</li>
+<li>Tell a STAR story: a disagreement and how you resolved it.</li>
+<li>Explain binary search with an example.</li>
+<li>Describe qaforge-mcp: what it does and why you built it.</li>
+<li>Explain how you would design tests for an API rate limiter.</li>
+<li>Tell a STAR story: something you improved for your team.</li>
+<li>Explain BFS vs DFS and when to use each.</li>
+<li>Explain caching and one problem it can cause.</li>
+<li>Describe your biggest weakness and what you do about it.</li>
+<li>Explain recursion to a beginner.</li>
+<li>Describe how you would test Google Maps directions.</li>
+<li>Tell a STAR story: a failure and what you learned.</li>
+<li>Explain dynamic programming in simple words.</li>
+<li>Summarise what you learned this week in 2 minutes.</li>
+</ol>
+</body></html>
