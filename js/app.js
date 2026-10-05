@@ -510,7 +510,8 @@
       '<div class="progressbar"><span style="width:' + Math.round((doneCount / steps.length) * 100) + '%"></span></div>' +
       '<div class="row spread small muted" style="margin-top:6px"><span>' + doneCount + ' of ' + steps.length + ' steps done</span>' + back + '</div></div>';
     if (doneCount === steps.length) head += '<div class="card" style="border-color:var(--green)"><b>Day complete.</b> Great work - rest, or revise a weak problem from the DSA tab.</div>';
-    return head + steps.map(function (s, i) { return stepCard(day, s, i + 1, stepBody(day, s)); }).join('');
+    return head + steps.map(function (s, i) { return stepCard(day, s, i + 1, stepBody(day, s)); }).join('') +
+      '<p class="muted small" style="text-align:center">Want to read more? <a href="#/more">Open your books</a></p>';
   }
 
   function pageBefore() {
@@ -699,11 +700,29 @@
       '<div class="card"><h3>Weak problems (' + weak.length + ')</h3>' + (weak.length ? '<div class="list">' + weak.map(function (p) { return '<a class="item" href="#/problem/' + p.id + '"><span>' + esc(p.title) + '</span><span class="badge ' + p.difficulty + '">' + p.difficulty + '</span></a>'; }).join('') + '</div>' : '<p class="muted">None. Mark a problem "Hard" after solving to add it here.</p>') + '</div>';
   }
 
+  var BOOKS = [
+    ['vol1-dsa', 'Vol 1 - DSA, zero to expert', '30 chapters, hints for all 150 problems'],
+    ['vol2-system-design', 'Vol 2 - System Design', '31 chapters, 11 case studies, Google papers'],
+    ['vol3-test-engineering', 'Vol 3 - Test Engineering', '37 chapters, 22 model answers'],
+    ['vol4-english', 'Vol 4 - Interview English', 'Grammar, phrases, speaking']
+  ];
+  var GH = 'https://github.com/sahil804-ps/google-prep/blob/main/book/sources/';
+
+  function booksCard() {
+    return '<div class="card"><h2>Your books</h2><p class="muted small">Read on any device, or upload the PDF to NotebookLM for audio overviews, quizzes and flashcards.</p>' +
+      '<div class="list">' + BOOKS.map(function (b) {
+        return '<div class="row spread"><div><b>' + esc(b[1]) + '</b><div class="muted small">' + esc(b[2]) + '</div></div>' +
+          ext('book/dist/' + b[0] + '.pdf', 'Open PDF') + '</div>';
+      }).join('') + '</div>' +
+      '<div class="row" style="margin-top:10px">' + ext(GH + 'notebooklm-guide.md', 'NotebookLM guide + prompts') +
+      ext(GH + 'notebooklm-sources.md', 'Free sources for NotebookLM') + '</div></div>';
+  }
+
   function pageMore() {
     var res = DESIGN.resources.map(function (g) {
       return '<h3>' + esc(g.group) + '</h3><div class="row">' + g.items.map(function (it) { return ext(it.url, it.label); }).join('') + '</div>';
     }).join('');
-    return '<div class="card"><h1>How to use this app</h1><ol>' +
+    return booksCard() + '<div class="card"><h1>How to use this app</h1><ol>' +
       '<li>Open <b>Today</b> every morning and do the steps top to bottom (about 2.5 hours).</li>' +
       '<li>Daily time split: 75 min DSA, 45 min design, 30 min English.</li>' +
       '<li>Use the timer in the top bar. Log minutes in Reflect.</li>' +

@@ -1,4 +1,4 @@
-var CACHE = 'gprep-v3';
+var CACHE = 'gprep-v4';
 var SHELL = [
   './',
   'index.html',
